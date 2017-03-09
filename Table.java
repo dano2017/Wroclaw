@@ -16,7 +16,8 @@ public class Table {
 	public boolean add(Card c){
 		turn=false;
 		int size=cards.size();
-		//אם אין קלפים, אז תוסיף קלף לערימת קלפים
+		//if there are no cards, so add a card to the pile
+		// we must to make sure if the card is number 10, if the pile is empty and add 10 - it is incorrect, we need to leave the pile still empty.
 		if(size==0){
 			if(c.getValue()!=10){
 				if(c.getValue()==8)
@@ -24,37 +25,39 @@ public class Table {
 				cards.add(size,c);
 				return true;
 			}
-			// חשוב לוודא אם הקלף הוא 10, כי אם הערימה ריקה ומוסיפים 10 - לא תקין, יש להשאיר את הערימה ריקה
 			else{
-				//				cards.clear();
 				turn=true;
 				return true;
 			}
 
 		}
-		//אם הקלף הוא בעל ערך 2 אז הוא שקול לערימה ריקה, אז תוסיף קלף לערימת קלפים 
+		//if the card is 2, so it has same meaning as empty pile, so add the card to the pile 
 		Card prev=cards.get(size-1);
-		if(prev.getValue()==2){
-			if(c.getValue()==8)
-				turn=true;
-			cards.add(size,c);
-			return true;
+		if(c.getValue()!=10){
+			if(prev.getValue()==2){
+				if(c.getValue()==8)
+					turn=true;
+				cards.add(size,c);
+				return true;
+			}
 		}
-		//מקרים עבור קלף מיוחד
+		//cases for special card
 		if(c.specialCard()){
 			switch(c.getValue()){
 			case 2: cards.add(size,c);
 			return true;
+			//if we choose card 3, we replace the place of 3 with the last card on top of the pile
 			case 3: cards.add(size,cards.get(size-1));
 			cards.set(size-1, c);
 			return true;
+			//if we choose the card of 7, we will make sure if the last card of the pile is less or same as 7.
 			case 7: if(7>=prev.getValue()){
 				cards.add(size,c);
 				return true;
 			}
 			else 
 				return false;
-			// כאשר בוחרים קלף 8, נוודא כי הקלף האחרון בערימה הינו קטן ממנו ושונה מ-7
+			//if we choose the card number 8, we will make sure that the last cade of the pile is same as 8 or less but different than 7 and we give another turn to the player.
 			case 8: if(8>=prev.getValue() && prev.getValue()!=7){
 				cards.add(size,c);
 				turn=true;
@@ -62,15 +65,16 @@ public class Table {
 			}
 			else 
 				return false;
+			//when we choose the card 10 - we erase the pile and give another turn.
 			case 10: cards.clear();
 			turn=true;
 			return true;
 			}
 
 		}
-		//מקרים רגילים
+		//regular cases
 		else{
-			//יש לבדוק אם הקלף הקודם הוא 7, אם כן אז הקלף הנוכחי חייב להיות שווה ל7 או מתחת
+			//we check if the previous card is 7, if yes, so we need to put the card number 7 or less.
 			if(prev.getValue()==7){
 				if(c.getValue()<=prev.getValue()){
 					cards.add(size,c);
@@ -79,7 +83,7 @@ public class Table {
 				else
 					return false;
 			}
-			//מקרה בסיסי ללא מקרים מיוחדים, אם הקלף הנוכחי גדול מהקלף הקודם אז תוסיף לערימת קלפים
+			//base case, with no spechial cases, if the current card is higher or same as the last card of the pile, if yes, so add the card to the pile
 			if(c.getValue()>=prev.getValue()){
 				cards.add(size,c);
 				return true;
@@ -92,7 +96,7 @@ public class Table {
 	}
 
 
-	//הפונקציה שולחת את מערך הקלפים שבקופה ומוחקת אותו (כלומר השחקן הפסיד ולוקח לעצמו את כל הקלפים)
+	//the function sends the array of the cards from the pile and erase it ( which means that the player lost and takes to his hand all the cards from the pile)
 	public ArrayList<Card> getCards() {
 		ArrayList<Card> temp = new ArrayList<Card>();
 		int size=cards.size();
@@ -102,20 +106,20 @@ public class Table {
 		}
 		return temp;
 	}
-	//מחזירה את הקלף האחרון בערימה
+	//returns the last card from the pile
 	public Card cardTable(){
 		if(cards.size()>0)
 			return cards.get(cards.size()-1);
 		return null;
 	}
-	//הדפסת כל הקלפים שבערימה
+	//prints all the cards from the pile
 	public void cardsInTable(){
 		System.out.println("deck: "+cards.toString());
 	}
 	public boolean turn(){
 		return turn;
 	}
-	//מוסיף קלפים דומים לקלף הנבחר, יש לוודא תקינות עם 10 ו3
+	//adds similar cards to the chosen card' we need to make sure that it matches to the rules of number 3 and 10.
 	public void addCardSame(Card c){
 		if(c.getValue()!=10){
 			if(c.getValue()!=3)
@@ -126,9 +130,9 @@ public class Table {
 				cards.set(size-1, c);
 			}
 		}
-		
+
 	}
-	//בודק אם יש 4 קלפים זהים בערימה, אם כן צריך לאפס את הערימה ולתת תור שוב
+	//checks if there are 4 same cards in the pile, if yes, we need to erase the pile and give another turn.
 	public void check4cards(){
 		int size=cards.size();
 		if(size>3){

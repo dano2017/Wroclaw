@@ -2,14 +2,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
-/** חפיסת קלפים */
 
 public class Deck {
 
 	private ArrayList<Card> cards;
 	
-/** פותח קופסה בעלת 52 קלפים*/
-	
+//standard cards deck with 52 cards	
 	public Deck() {
 		int countID=0;
 		cards = new ArrayList<>();
@@ -29,8 +27,7 @@ public class Deck {
 	public int getNumOfCards() {
 		return cards.size();
 	}
-/** קלף הבא בערימה, אם יש אז הוא שולף ומוחק אותה מהרשימה אחרת מחזיר נאל */
-	
+//Checking if the card is exists in the pile, if yes, give the card to the player and delete from the pile	
 	public ArrayList<Card> getNextCards(int numOfCards) {
 		ArrayList<Card> ret = new ArrayList<Card>();
 		for (int i = 0; i < numOfCards && hasNext(); i++) {
@@ -52,7 +49,6 @@ public class Deck {
 	public boolean hasNext() {
 		return !cards.isEmpty();
 	}
-/** ערבוב הערימה */
 	
 	public void shuffle(){
 		Collections.shuffle(cards);
