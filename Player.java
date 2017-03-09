@@ -23,17 +23,17 @@ public class Player {
 	}
 	//replace, before the game we allow the players to replace the cards of their hands with the cards on the table with face to up
 	public void Choose(){
-		System.out.println(name+" Change 0 = EXIT, Choose (HAND)");
+		System.out.println(name+" replace the cards, 0=exit or choose(HAND)");
 		Scanner console = new Scanner(System.in);
 		int x = console.nextInt(); 
 		while(x!=0){
-			System.out.println("instead of Choose (UP)");
+			System.out.println("instead of choose(UP)");
 			int y=console.nextInt();
 			Card c=cardHand.get(x-1);
 			cardHand.set(x-1, cardUp.get(y-1));
 			cardUp.set(y-1, c);
 			System.out.println(this.toString());
-			System.out.println(name+" Change 0 = EXIT,Choose(HAND)");
+			System.out.println(name+" replace the cards, 0=exit or choose(HAND)");
 			x = console.nextInt(); 
 		}
 	}
@@ -41,7 +41,7 @@ public class Player {
 	public void Attack(){
 		System.out.println(this.toString());
 		if(!cardHand.isEmpty()){
-			System.out.println("Choose(HAND)");
+			System.out.println("choose(HAND)");
 			Scanner console = new Scanner(System.in);
 			int x = console.nextInt();
 			Card c=cardHand.get(x-1);
@@ -75,7 +75,7 @@ public class Player {
 			}
 		}
 		else if(!cardUp.isEmpty()){
-			System.out.println("Choose(UP)");
+			System.out.println("choose(UP)");
 			Scanner console = new Scanner(System.in);
 			int x = console.nextInt();
 			Card c=cardUp.get(x-1);
@@ -95,7 +95,7 @@ public class Player {
 
 		}
 		else{
-			System.out.println("Choose(Down) "+cardDown.size()+" cards");
+			System.out.println("choose(Down) "+cardDown.size()+" cards");
 			Scanner console = new Scanner(System.in);
 			int x = console.nextInt();
 			Card c=cardDown.get(x-1);
