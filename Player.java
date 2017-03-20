@@ -72,7 +72,7 @@ public class Player {
 			}
 			else{
 				//if the player choose incorrect card, which means lost, so the all pile will join to his hand. and the pile is empty.
-				cardHand=res(table.getCards());	
+				add(table.getCards());	
 
 			}
 			sort(cardHand);
@@ -84,17 +84,21 @@ public class Player {
 			Card c=cardUp.get(x-1);
 			System.out.println("your choosing "+c.toString());
 			if(!table.add(c)){
-				//if the card is not match to the rules of the game, we add the all pile to his hand. 
-				ArrayList<Card> temp=table.getCards();
-				int size=temp.size();
-				for(int i=0;i<size;i++){
-					cardHand.add(temp.get(i));
-				}
+				//if the card is not match to the rules of the game, we add the all pile to his hand.
 				cardHand.add(c);
+				add(table.getCards());
+				//				ArrayList<Card> temp=table.getCards();
+				//				int size=temp.size();
+				//				for(int i=0;i<size;i++){
+				//					cardHand.add(temp.get(i));
+				//				}
+				//				cardHand.add(c);
+				sort(cardHand);
 			}
-			cardUp.remove(x-1);
+
 			table.check4cards();
-			sort(cardHand);
+			cardUp.remove(x-1);
+
 
 
 		}
@@ -104,17 +108,20 @@ public class Player {
 			int x = console.nextInt();
 			Card c=cardDown.get(x-1);
 			System.out.println("your choosing "+c.toString());
-			if(!table.add(c)){					
-				ArrayList<Card> temp=table.getCards();
-				int size=temp.size();
-				for(int i=0;i<size;i++){
-					cardHand.add(temp.get(i));
-				}
+			if(!table.add(c)){		
 				cardHand.add(c);
+				add(table.getCards());
+				//				ArrayList<Card> temp=table.getCards();
+				//				int size=temp.size();
+				//				for(int i=0;i<size;i++){
+				//					cardHand.add(temp.get(i));
+				//				}
+				//				cardHand.add(c);
 				sort(cardHand);
 			}
-			cardDown.remove(x-1);
 			table.check4cards();
+			cardDown.remove(x-1);
+
 
 		}
 
@@ -157,19 +164,23 @@ public class Player {
 		return count;
 	}
 	//the function adds to the hand all the cards from the pile
-	public ArrayList<Card> res(ArrayList<Card> b) {
-		ArrayList<Card> res = new ArrayList<Card>();
-		int size=cardHand.size();
-		for (int i = 0; i < size; i++) {
-			res.add(cardHand.get(0));
-			cardHand.remove(0);
+	public void add(ArrayList<Card> b) {
+		int size=b.size();
+		for(int i=0;i<size;i++){
+			cardHand.add(b.get(i));
 		}
-		size=b.size();
-		for (int i = 0; i < size; i++) {
-			res.add(b.get(0));
-			b.remove(0);
-		}
-		return res;
+		//		ArrayList<Card> res = new ArrayList<Card>();
+		//		int size=cardHand.size();
+		//		for (int i = 0; i < size; i++) {
+		//			res.add(cardHand.get(0));
+		//			cardHand.remove(0);
+		//		}
+		//		size=b.size();
+		//		for (int i = 0; i < size; i++) {
+		//			res.add(b.get(0));
+		//			b.remove(0);
+		//		}
+		//		return res;
 	}
 
 	public String getName() {

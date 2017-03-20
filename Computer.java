@@ -51,11 +51,11 @@ public class Computer  {
 	}
 	public void Attack(){
 		System.out.println(this.toString());
-		int size=cardHand.size();
 		Card c=table.cardTable();
 		boolean done=false;
 		Card temp=null;
 		if(!cardHand.isEmpty()){
+			int size=cardHand.size();
 			if(c==null || c.getValue()==2){
 				for(int i=0;i<size;i++){
 					if(cardHand.get(i).getValue()!=2 && cardHand.get(i).getValue()!=3 && cardHand.get(i).getValue()!=10){
@@ -134,13 +134,74 @@ public class Computer  {
 				table.check4cards();
 			}
 			else
-				cardHand=res(table.getCards());	
+				add(table.getCards());	
 			sort(cardHand);
 		}
 		else if(!cardUp.isEmpty()){
+			if(c==null || c.getValue()==2){
+				temp=cardUp.get(cardUp.size()-1);
+				cardUp.remove(cardUp.size()-1);
+				done=true;
+
+			}
+			else{
+				int size=cardUp.size();
+				for(int i=0;i<size;i++){
+					if(cardUp.get(i).getValue()>c.getValue() && cardUp.get(i).getValue()!= 10 && cardUp.get(i).getValue()!= 2 && cardUp.get(i).getValue()!= 3 ){
+						temp=cardUp.get(i);
+						cardUp.remove(i);
+						done=true;
+						break;
+					}
+				}
+				if(!done){
+					for(int i=0;i<size;i++){
+						if(cardUp.get(i).getValue()>c.getValue()){
+							temp=cardUp.get(i);
+							cardUp.remove(i);
+							done=true;
+							break;
+						}
+					}
+					if(!done){
+						for(int i=0;i<size;i++){
+							if(cardUp.get(i).getValue()==3 || cardUp.get(i).getValue()==2 || cardUp.get(i).getValue()==10){
+								temp=cardUp.get(i);
+								cardUp.remove(i);
+								done=true;
+								break;
+							}
+						}
+						
+					}
+				}
+			}
+			if(done){
+				table.add(temp);
+				System.out.println("computer choosing "+temp.toString());
+				table.check4cards();
+			}
+			else{
+				add(table.getCards());
+				cardHand.add(cardUp.get(0));
+				sort(cardHand);
+				cardUp.remove(0);
+			}
 
 		}
 		else{
+			Card rnd=cardDown.get(0);
+			if(c==null || c.getValue()==2 || c.getValue()<rnd.getValue()){
+				table.add(rnd);
+				System.out.println("computer choosing "+rnd.toString());
+				table.check4cards();
+			}
+			else{
+				add(table.getCards());
+				cardHand.add(cardDown.get(0));
+				sort(cardHand);
+			}
+			cardDown.remove(0);
 
 		}
 
@@ -157,19 +218,23 @@ public class Computer  {
 		return count;
 	}
 	//the function adds to the hand all the cards from the pile
-	public ArrayList<Card> res(ArrayList<Card> b) {
-		ArrayList<Card> res = new ArrayList<Card>();
-		int size=cardHand.size();
-		for (int i = 0; i < size; i++) {
-			res.add(cardHand.get(0));
-			cardHand.remove(0);
+	public void add(ArrayList<Card> b) {
+		int size=b.size();
+		for(int i=0;i<size;i++){
+			cardHand.add(b.get(i));
 		}
-		size=b.size();
-		for (int i = 0; i < size; i++) {
-			res.add(b.get(0));
-			b.remove(0);
-		}
-		return res;
+		//		ArrayList<Card> res = new ArrayList<Card>();
+		//		int size=cardHand.size();
+		//		for (int i = 0; i < size; i++) {
+		//			res.add(cardHand.get(0));
+		//			cardHand.remove(0);
+		//		}
+		//		size=b.size();
+		//		for (int i = 0; i < size; i++) {
+		//			res.add(b.get(0));
+		//			b.remove(0);
+		//		}
+		//		return res;
 	}
 	private void sort(ArrayList<Card> c) {
 		int size=c.size();

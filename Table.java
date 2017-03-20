@@ -136,14 +136,28 @@ public class Table {
 	public void check4cards(){
 		int size=cards.size();
 		if(size>3){
-			int count=0;
-			for(int i=size-4;i<size-1;i++){
-				if(cards.get(i).getValue()==cards.get(i+1).getValue())
-					count++;
+			if(cards.get(size-1).getValue()!=3){
+				int count=0;
+				for(int i=size-4;i<size-1;i++){
+					if(cards.get(i).getValue()==cards.get(i+1).getValue())
+						count++;
+				}
+				if(count==3){
+					turn=true;
+					cards.clear();
+				}
 			}
-			if(count==3){
-				turn=true;
-				cards.clear();
+			//אם יש רצף של 4 קלפים עם ערך 3 אז צריך לבדוק את ה4 הקלפים שלפני האחרון
+			else{
+				int count=0;
+				for(int i=size-5;i<size-2;i++){
+					if(cards.get(i).getValue()==cards.get(i+1).getValue())
+						count++;
+				}
+				if(count==3){
+					turn=true;
+					cards.clear();
+				}
 			}
 
 		}
