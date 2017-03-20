@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 
 public class Card implements Comparable {
 
@@ -48,5 +50,11 @@ public class Card implements Comparable {
 		return this.value-temp;
 		
 	}
+	public ArrayList<Card> cardSort(){
+		return null;
+		
+		
+	}
+
 
 }

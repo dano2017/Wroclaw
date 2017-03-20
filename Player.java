@@ -16,6 +16,7 @@ public class Player {
 		this.deck=k;
 		this.name = name;
 		this.cardHand=deck.getNextCards(3);
+		sort(cardHand);
 		this.cardUp=deck.getNextCards(3);
 		this.cardDown=deck.getNextCards(3);
 		this.table=t;
@@ -72,7 +73,9 @@ public class Player {
 			else{
 				//if the player choose incorrect card, which means lost, so the all pile will join to his hand. and the pile is empty.
 				cardHand=res(table.getCards());	
+
 			}
+			sort(cardHand);
 		}
 		else if(!cardUp.isEmpty()){
 			System.out.println("choose(UP)");
@@ -91,6 +94,7 @@ public class Player {
 			}
 			cardUp.remove(x-1);
 			table.check4cards();
+			sort(cardHand);
 
 
 		}
@@ -107,12 +111,39 @@ public class Player {
 					cardHand.add(temp.get(i));
 				}
 				cardHand.add(c);
+				sort(cardHand);
 			}
 			cardDown.remove(x-1);
 			table.check4cards();
 
 		}
 
+	}
+	private void sort(ArrayList<Card> c) {
+		int size=c.size();
+		if(size>1){
+			ArrayList<Card> cardHandNew = new ArrayList<Card>();
+			int valueMin;
+			int indexMin;
+			while(cardHandNew.size()!=size){
+				valueMin=c.get(0).getValue();
+				indexMin=0;
+				for(int i=1;i<c.size();i++){
+					if(c.get(i).getValue()<valueMin){
+						indexMin=i;
+						valueMin=c.get(i).getValue();
+					}
+				}
+				cardHandNew.add(c.get(indexMin));
+				c.remove(indexMin);
+
+			}
+			cardHand.clear();
+			for(int i=0;i<size;i++){
+				cardHand.add(cardHandNew.get(i));
+			}
+			cardHandNew.clear();
+		}
 	}
 	//checks how many same cards are in the hand.
 	private int checkSameCards(Card c) {

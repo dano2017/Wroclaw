@@ -1,48 +1,51 @@
 
 public class Game {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		Deck d=new Deck(); 
 		Table t=new Table(d);
-		Player a=new Player("player1",d,t);
-		Player b=new Player("player2",d,t);
+		Player a=new Player("Liav",d,t);
+		Computer b=new Computer("Computer",d,t);
 		System.out.println(a.toString());
 		System.out.println(b.toString());
 		a.Choose();
 		b.Choose();
+		System.out.println();
+		System.out.println("* * * * *");
+		Thread.sleep(1000);
 		System.out.println("START GAME!!");
+		Thread.sleep(1000);
 		if(t.cardTable()!=null)
 			System.out.println("---"+t.cardTable().toString()+"---");
 		else
 			System.out.println("--- [,] ---");
 		boolean turn;
-		System.out.println("numofCardsindeck "+d.getNumOfCards());
 		while(a.getNumberOfCards()>0 && b.getNumberOfCards()>0){
 			turn=true;
 			while(turn){
+				Thread.sleep(1000);
 				a.Attack();
 				if(t.cardTable()!=null){
 					System.out.println("---"+t.cardTable().toString()+"---");
-					t.cardsInTable();
+//					t.cardsInTable();
 				}
 				else
 					System.out.println("--- [,] ---");
-				System.out.println("numofCardsindeck "+d.getNumOfCards());
 				turn=t.turn();
 			}
 			if(a.getNumberOfCards()==0)
 				break;
 			turn=true;
 			while(turn){
+				Thread.sleep(1000);
 				b.Attack();
 				if(t.cardTable()!=null){
 					System.out.println("---"+t.cardTable().toString()+"---");
-					t.cardsInTable();
+//					t.cardsInTable();
 				}
 				else
 					System.out.println("--- [,] ---");
-				System.out.println("numofCardsindeck "+d.getNumOfCards());
 				turn=t.turn();
 			}
 		}

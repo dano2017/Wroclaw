@@ -15,47 +15,187 @@ public class Computer  {
 		this.deck=k;
 		this.name = name;
 		this.cardHand=deck.getNextCards(3);
+		sort(cardHand);
 		this.cardUp=deck.getNextCards(3);
 		this.cardDown=deck.getNextCards(3);
+		this.table=t;
 
 	}
-	@SuppressWarnings("unchecked")
 	public void Choose(){
-		Card c,x;
-		int countSpecialCard=0;
-		boolean hasSpecialCard=false;
+		boolean done;
 		for(int i=0;i<3;i++){
-			c=cardUp.get(i);
-			if(!c.specialCard()){
+			done=false;
+			if(cardUp.get(i).getValue()!=2 && cardUp.get(i).getValue()!=3 && cardUp.get(i).getValue()!=10){
 				for(int j=0;j<3;j++){
-					x=cardHand.get(j);
-					if(x.specialCard()){
-						countSpecialCard++;
-						cardUp.set(i, x);
-						cardHand.set(j, c);
-						hasSpecialCard=true;
+					if(cardHand.get(j).getValue()==2 || cardHand.get(j).getValue()==3 || cardHand.get(j).getValue()==10){
+						Card c=cardHand.get(j);
+						cardHand.set(j, cardUp.get(i));
+						cardUp.set(i,c);
+						sort(cardHand);
+						done=true;
 						break;
 					}
 				}
-				if(!hasSpecialCard){
-					Collections.sort(cardHand);
-					x=cardHand.get(2);
-					if(c.getValue()<x.getValue()){
-						cardUp.set(i, x);
-						cardHand.set(2,c);
+				if(!done){
+					if(cardUp.get(i).getValue()<cardHand.get(cardHand.size()-1).getValue()){
+						Card c=cardHand.get(cardHand.size()-1);
+						cardHand.set(cardHand.size()-1, cardUp.get(i));
+						cardUp.set(i,c);
+						sort(cardHand);
 					}
 				}
-				hasSpecialCard=false;
 
 			}
-			else
-				countSpecialCard++;
 		}
-		System.out.println("count "+countSpecialCard);
+		System.out.println(this.toString());
 	}
-
 	public void Attack(){
+		System.out.println(this.toString());
+		int size=cardHand.size();
+		Card c=table.cardTable();
+		boolean done=false;
+		Card temp=null;
+		if(!cardHand.isEmpty()){
+			if(c==null || c.getValue()==2){
+				for(int i=0;i<size;i++){
+					if(cardHand.get(i).getValue()!=2 && cardHand.get(i).getValue()!=3 && cardHand.get(i).getValue()!=10){
+						temp=cardHand.get(i);
+						cardHand.remove(i);
+						done=true;
+						break;
+					}	
+				}
+				if(!done){
+					temp=cardHand.get(0);
+					cardHand.remove(0);
+					done=true;
+				}
+			}
+			else if(c.getValue()==7){
+				for(int i=0;i<size;i++){
+					if(cardHand.get(i).getValue()!=2 && cardHand.get(i).getValue()!=3 && cardHand.get(i).getValue()!=10 && cardHand.get(i).getValue()<8){
+						temp=cardHand.get(i);
+						cardHand.remove(i);
+						done=true;
+						break;
+					}	
+				}
+				if(!done){
+					for(int i=0;i<size;i++){
+						if(cardHand.get(i).getValue()==2 || cardHand.get(i).getValue()==3 || cardHand.get(i).getValue()==10){
+							temp=cardHand.get(i);
+							cardHand.remove(i);
+							done=true;
+							break;
+						}
+					}
+				}
+			}
+			else{
+				for(int i=0;i<size;i++){
+					if(cardHand.get(i).getValue()!=2 && cardHand.get(i).getValue()!=3 && cardHand.get(i).getValue()!=10 && cardHand.get(i).getValue()>=c.getValue()){
+						temp=cardHand.get(i);
+						cardHand.remove(i);
+						done=true;
+						break;
+					}	
+				}
+				if(!done){
+					for(int i=0;i<size;i++){
+						if(cardHand.get(i).getValue()==2 || cardHand.get(i).getValue()==3 || cardHand.get(i).getValue()==10){
+							temp=cardHand.get(i);
+							cardHand.remove(i);
+							done=true;
+							break;
+						}
+					}
+				}
+			}
+			if(done){
+				table.add(temp);
+				System.out.println("computer choosing "+temp.toString());
+				int same;
+				//checks if there are more same cards in the hand
+				same=checkSameCards(temp);
+				for(int j=0;j<size && same!=0 ;j++){
+					if(cardHand.get(j).getValue()==temp.getValue()){
+						//adds the card to the pile
+						table.addCardSame(cardHand.get(j));
+						cardHand.remove(j);
+						same--;
+						j--;
+					}
+				}
+				//while the player has less than 3 cards and the pile is not empty, fill up to 3 cards.
+				while(deck.hasNext() && cardHand.size()<3){
+					cardHand.add(deck.getNextCard());
+				}
+				//checks if there are 4 same cards, if yes, empty the pile and act again.
+				table.check4cards();
+			}
+			else
+				cardHand=res(table.getCards());	
+			sort(cardHand);
+		}
+		else if(!cardUp.isEmpty()){
 
+		}
+		else{
+
+		}
+
+	}
+	//checks how many same cards are in the hand.
+	private int checkSameCards(Card c) {
+		int count=0;
+		int value=c.getValue();
+		for(int i=0;i<cardHand.size();i++){
+			if(cardHand.get(i).getValue()== value){
+				count++;
+			}
+		}
+		return count;
+	}
+	//the function adds to the hand all the cards from the pile
+	public ArrayList<Card> res(ArrayList<Card> b) {
+		ArrayList<Card> res = new ArrayList<Card>();
+		int size=cardHand.size();
+		for (int i = 0; i < size; i++) {
+			res.add(cardHand.get(0));
+			cardHand.remove(0);
+		}
+		size=b.size();
+		for (int i = 0; i < size; i++) {
+			res.add(b.get(0));
+			b.remove(0);
+		}
+		return res;
+	}
+	private void sort(ArrayList<Card> c) {
+		int size=c.size();
+		if(size>1){
+			ArrayList<Card> cardHandNew = new ArrayList<Card>();
+			int valueMin;
+			int indexMin;
+			while(cardHandNew.size()!=size){
+				valueMin=c.get(0).getValue();
+				indexMin=0;
+				for(int i=1;i<c.size();i++){
+					if(c.get(i).getValue()<valueMin){
+						indexMin=i;
+						valueMin=c.get(i).getValue();
+					}
+				}
+				cardHandNew.add(c.get(indexMin));
+				c.remove(indexMin);
+
+			}
+			cardHand.clear();
+			for(int i=0;i<size;i++){
+				cardHand.add(cardHandNew.get(i));
+			}
+			cardHandNew.clear();
+		}
 	}
 
 	public String getName() {
@@ -95,13 +235,21 @@ public class Computer  {
 	}
 
 	public String toString(){
-		String string=name+ " Hand: ";
+		String string=name+ "\nHAND:";
+		int count=1;
 		for(Card c:cardHand){
+			string+="("+count+")";
 			string+=c;
+			string+="|";
+			count++;
 		}
-		string+=" cardUp ";
+		count=1;
+		string+="\nUP:";
 		for(Card c:cardUp){
+			string+="("+count+")";
 			string+=c;
+			string+="|";
+			count++;
 		}
 		return string;
 	}
