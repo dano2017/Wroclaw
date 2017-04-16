@@ -223,18 +223,7 @@ public class Computer  {
 		for(int i=0;i<size;i++){
 			cardHand.add(b.get(i));
 		}
-		//		ArrayList<Card> res = new ArrayList<Card>();
-		//		int size=cardHand.size();
-		//		for (int i = 0; i < size; i++) {
-		//			res.add(cardHand.get(0));
-		//			cardHand.remove(0);
-		//		}
-		//		size=b.size();
-		//		for (int i = 0; i < size; i++) {
-		//			res.add(b.get(0));
-		//			b.remove(0);
-		//		}
-		//		return res;
+		
 	}
 	private void sort(ArrayList<Card> c) {
 		int size=c.size();
@@ -300,15 +289,8 @@ public class Computer  {
 	}
 
 	public String toString(){
-		String string=name+ "\nHAND:";
+		String string=name+ "\nHAND:"+cardHand.size()+" cards";
 		int count=1;
-		for(Card c:cardHand){
-			string+="("+count+")";
-			string+=c;
-			string+="|";
-			count++;
-		}
-		count=1;
 		string+="\nUP:";
 		for(Card c:cardUp){
 			string+="("+count+")";
@@ -316,6 +298,7 @@ public class Computer  {
 			string+="|";
 			count++;
 		}
+		string+="\nDOWN:"+cardDown.size()+" cards";
 		return string;
 	}
 }

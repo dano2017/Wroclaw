@@ -28,10 +28,12 @@ public class Game {
 				a.Attack();
 				if(t.cardTable()!=null){
 					System.out.println("---"+t.cardTable().toString()+"---");
-//					t.cardsInTable();
+					
 				}
 				else
 					System.out.println("--- [,] ---");
+				t.cardsInTable();
+				System.out.println(d.getNumOfCards());
 				turn=t.turn();
 			}
 			if(a.getNumberOfCards()==0)
@@ -42,10 +44,12 @@ public class Game {
 				b.Attack();
 				if(t.cardTable()!=null){
 					System.out.println("---"+t.cardTable().toString()+"---");
-//					t.cardsInTable();
+					
 				}
 				else
 					System.out.println("--- [,] ---");
+				t.cardsInTable();
+				System.out.println(d.getNumOfCards());
 				turn=t.turn();
 			}
 		}

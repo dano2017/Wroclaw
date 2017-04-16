@@ -134,10 +134,10 @@ public class Table {
 	}
 	//checks if there are 4 same cards in the pile, if yes, we need to erase the pile and give another turn.
 	public void check4cards(){
+		int count=0;
 		int size=cards.size();
 		if(size>3){
 			if(cards.get(size-1).getValue()!=3){
-				int count=0;
 				for(int i=size-4;i<size-1;i++){
 					if(cards.get(i).getValue()==cards.get(i+1).getValue())
 						count++;
@@ -147,9 +147,8 @@ public class Table {
 					cards.clear();
 				}
 			}
-			//אם יש רצף של 4 קלפים עם ערך 3 אז צריך לבדוק את ה4 הקלפים שלפני האחרון
+			//If there is a sequence of 4 cards with a value of 3 then we need to check 4 cards before last card.
 			else{
-				int count=0;
 				for(int i=size-5;i<size-2;i++){
 					if(cards.get(i).getValue()==cards.get(i+1).getValue())
 						count++;

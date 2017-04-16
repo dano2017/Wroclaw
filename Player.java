@@ -169,18 +169,6 @@ public class Player {
 		for(int i=0;i<size;i++){
 			cardHand.add(b.get(i));
 		}
-		//		ArrayList<Card> res = new ArrayList<Card>();
-		//		int size=cardHand.size();
-		//		for (int i = 0; i < size; i++) {
-		//			res.add(cardHand.get(0));
-		//			cardHand.remove(0);
-		//		}
-		//		size=b.size();
-		//		for (int i = 0; i < size; i++) {
-		//			res.add(b.get(0));
-		//			b.remove(0);
-		//		}
-		//		return res;
 	}
 
 	public String getName() {
@@ -236,6 +224,7 @@ public class Player {
 			string+="|";
 			count++;
 		}
+		string+="\nDOWN: "+cardDown.size()+" cards";
 		return string;
 	}
 
