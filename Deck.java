@@ -2,11 +2,16 @@
 import java.util.ArrayList;
 import java.util.Collections;
 
+import javax.swing.ImageIcon;
+
 
 public class Deck {
 
 	private ArrayList<Card> cards;
-	
+	public ImageIcon card_front;
+    public ImageIcon card_back;
+    String ImageLocation;
+
 //standard cards deck with 52 cards	
 	public Deck() {
 		int countID=0;

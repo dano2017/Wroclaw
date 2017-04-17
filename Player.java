@@ -5,9 +5,9 @@ import java.util.Scanner;
 public class Player {
 
 	private String name;
-	private ArrayList<Card> cardHand;
-	private ArrayList<Card> cardUp;
-	private ArrayList<Card> cardDown;
+	public ArrayList<Card> cardHand;
+	public ArrayList<Card> cardUp;
+	public ArrayList<Card> cardDown;
 	private Deck deck;
 	private Table table;
 
